@@ -1,26 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using System.Diagnostics;
 using UnityEngine;
 
 public class ChangeColor : MonoBehaviour
 {
     public GameObject model;
-    public Color color;
-    public Material colorMaterial; 
-    // Start is called before the first frame update
-    void Start()
-    {
-            
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
+    public Material[] materialesTraje;
 
-    }
     public void ChangeColor_BTN()
     {
-        model.GetComponent<Renderer>().material.color = color;
-        colorMaterial.color = color;
+        // Validamos que haya materiales en la lista y que el modelo exista
+        if (materialesTraje.Length == 0 || model == null) return;
+
+        // Obtenemos el Renderer del modelo
+        Renderer rend = model.GetComponentInChildren<Renderer>();
+        int indiceAleatorio = UnityEngine.Random.Range(0, materialesTraje.Length);
+        rend.material = materialesTraje[indiceAleatorio];
     }
 }
