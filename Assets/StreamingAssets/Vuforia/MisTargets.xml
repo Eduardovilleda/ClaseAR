@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig>
   <Tracking>
-    <ImageTarget name="deathstroke-zero-fortnite_3840x2160_xtrafondos" size="1.000000 0.562500" />
+    <ImageTarget name="zomama" size="1.000000 1.220497" />
+    <ImageTarget name="mazozo" size="1.000000 1.021792" />
+    <ImageTarget name="zoma" size="1.000000 1.337143" />
+    <ImageTarget name="mamazo" size="1.000000 0.945175" />
+    <ImageTarget name="mazo" size="1.000000 1.007975" />
   </Tracking>
 </QCARConfig>

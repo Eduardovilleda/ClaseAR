@@ -1,33 +1,73 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ChangeAccesory : MonoBehaviour
 {
+    [Header("Modelos 3D (Accesorios)")]
     public GameObject[] accesorios;
+
+    [Header("Colección Desbloqueada")]
+    public bool[] desbloqueados;
+
+    [Header("Color de Piel (Cura)")]
+    public SkinnedMeshRenderer zombieRenderer;
+    public Material materialZombi;
+    public Material materialCurado;
+    private bool estaCurado = false;
+
+    void Start()
+    {
+        for (int i = 0; i < accesorios.Length; i++)
+        {
+            if (accesorios[i] != null) accesorios[i].SetActive(false);
+        }
+    }
 
     public void EquiparAccesorioAleatorio()
     {
-        // Si no hay accesorios en la lista, salimos para evitar errores
-        if (accesorios.Length == 0) return;
+        if (accesorios == null || accesorios.Length == 0 || desbloqueados.Length != accesorios.Length) return;
 
-        // Apagamos todos los accesorios primero para evitar que se encimen
-        foreach (GameObject accesorio in accesorios)
+        List<int> opcionesValidas = new List<int>();
+        for (int i = 0; i < desbloqueados.Length; i++)
         {
-            if (accesorio != null)
-            {
-                accesorio.SetActive(false);
-            }
+            if (desbloqueados[i] == true) opcionesValidas.Add(i);
         }
 
-        // Elegimos un índice al azar
-        int indice = UnityEngine.Random.Range(0, accesorios.Length);
+        if (opcionesValidas.Count == 0) return;
 
-        // 3. Encendemos solo el accesorio seleccionado
-        if (accesorios[indice] != null)
+        int indiceAleatorio = UnityEngine.Random.Range(0, opcionesValidas.Count);
+        SincronizarVista(opcionesValidas[indiceAleatorio]);
+    }
+
+    public void CambiarColorPiel()
+    {
+        if (zombieRenderer == null) return;
+        estaCurado = !estaCurado;
+        zombieRenderer.material = estaCurado ? materialCurado : materialZombi;
+    }
+
+    public void DesbloquearYEquiparEspecifico(int indice)
+    {
+        if (accesorios == null || indice < 0 || indice >= desbloqueados.Length) return;
+        desbloqueados[indice] = true;
+        SincronizarVista(indice);
+    }
+
+    public void CurarZombiDefinitivo()
+    {
+        if (zombieRenderer != null && materialCurado != null)
         {
-            accesorios[indice].SetActive(true);
+            estaCurado = true;
+            zombieRenderer.material = materialCurado;
+        }
+    }
+
+    private void SincronizarVista(int indiceAEncender)
+    {
+        for (int i = 0; i < accesorios.Length; i++)
+        {
+            if (accesorios[i] != null) accesorios[i].SetActive(i == indiceAEncender);
         }
     }
 }
